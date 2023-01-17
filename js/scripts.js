@@ -89,11 +89,11 @@ formulario.addEventListener('submit', function(evento){
 
     if(nombre==='' || email==='' || mensaje===''){
         //console.log('Todos los campos son obligatorios');
-        mostrarError('Todos los campos son obligatorios');
+        mostrarAlerta('Todos los campos son obligatorios', true);
 
         return; //corta la ejecucion del codigo
     }else{
-        mostrarCorrecto('Se ha enviado el formulario');
+        mostrarAlerta('Se ha enviado el formulario');
     }
     
     //enviar el formulario
@@ -134,6 +134,23 @@ function leerTexto(e){
     datos[e.target.id] = e.target.value;
 
     
+}
+ //--------------Simplificando 
+function mostrarAlerta(mensaje, error=null){
+    const alerta =document.createElement('P');
+    alerta.textContent = mensaje;
+
+    if(error){
+        alerta.classList.add('error');
+    }else{
+        alerta.classList.add('correcto');
+        
+    }
+    formulario.appendChild(alerta);
+    setTimeout(()=>{
+        alerta.remove();
+    }, 5000);
+
 }
 
 function mostrarError(mensaje){
