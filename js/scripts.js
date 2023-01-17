@@ -44,33 +44,122 @@ navegacion.appendChild(nuevoEnlace);
 console.log(nuevoEnlace);
 
 
-//Eventos
-console.log(1);
+//------------------Eventos
+// console.log(1);
 
-window.addEventListener('load', function(){ //load espera a que el Js y los archios que dependen del HTML esten listos
-    console.log(2);
+// window.addEventListener('load', function(){ //load espera a que el Js y los archios que dependen del HTML esten listos
+//     console.log(2);
 
-});
+// });
 
-window.onload=function(){
-    console.log(3);
-}
+// window.onload=function(){
+//     console.log(3);
+// }
 
-document.addEventListener('DOMContentLoaded', function(){ //Solamente espera a que se descargue HTML, pero no espera a CSS o imagenes.
-    console.log(4);
-});
+// document.addEventListener('DOMContentLoaded', function(){ //Solamente espera a que se descargue HTML, pero no espera a CSS o imagenes.
+//     console.log(4);
+// });
 
-console.log(5);
+// console.log(5);
 
-window.onscroll=function(){
-    console.log('scrolling..');
-}
+// window.onscroll=function(){
+//     console.log('scrolling..');
+// }
 
 //Seleccionar elementos y asociarles un evento
 
-const btnEnviar = document.querySelector('.boton--primario');
-btnEnviar.addEventListener('click', function(event){
-    console.log(event);
-    event.preventDefault();
+        // const btnEnviar = document.querySelector('.boton--primario');
+        // btnEnviar.addEventListener('click', function(event){
+        //     console.log(event);
+        //     event.preventDefault();
+        //     console.log('Enviando formulario');
+        // });
+//-------- Evento de Submit
+const formulario = document.querySelector('.formulario');
+const nombre= document.querySelector('#nombre');
+const email= document.querySelector('#email');
+const mensaje= document.querySelector('#mensaje');
+//Es diferente el evento submit al evento de click, el evento de click se puede hacer hacia cualquier cosa y submit solo en los formularios o cuando se manda informacion
+formulario.addEventListener('submit', function(evento){
+    evento.preventDefault();
+
+    
+    //Validar el fromulario
+    const {nombre, email, mensaje}= datos;
+
+    if(nombre==='' || email==='' || mensaje===''){
+        //console.log('Todos los campos son obligatorios');
+        mostrarError('Todos los campos son obligatorios');
+
+        return; //corta la ejecucion del codigo
+    }else{
+        mostrarCorrecto('Se ha enviado el formulario');
+    }
+    
+    //enviar el formulario
+    
+    
     console.log('Enviando formulario');
-})
+});
+
+//Eventos de los inputs y textareas
+
+const datos={
+    nombre:'',
+    email:'',
+    mensaje:''
+};
+
+
+//Change manda la accion en cuanto se sale del cuadro de input, sin embargo, 'input' es en tiempo real, va mandando en seguida se teclea.
+// nombre.addEventListener('input', function(e){
+//     console.log(e.target.value);
+    //---------Con la linea de arriba vemos inmediatamente en frase lo que esta escrito en el input.
+// });
+// email.addEventListener('input', function(e){
+//     console.log(e.target.value);
+// });
+// mensaje.addEventListener('input', function(e){
+//     console.log(e.target.value);
+// });
+
+//Linea mas optimizada 
+    nombre.addEventListener('input', leerTexto);
+    email.addEventListener('input', leerTexto);
+    mensaje.addEventListener('input', leerTexto);
+
+function leerTexto(e){
+    // console.log(e.target.value);
+
+    datos[e.target.id] = e.target.value;
+
+    
+}
+
+function mostrarError(mensaje){
+    const error =document.createElement('P');
+    error.textContent = mensaje;
+    error.classList.add('error');
+
+    formulario.appendChild(error);
+
+    //Desaoarezca despues de 1 segundos
+    setTimeout(()=>{
+        error.remove();
+    }, 5000);
+}
+
+//Mostrar que se enviaron los datos del formulario
+function mostrarCorrecto(mensaje){
+    const correcto =document.createElement('P'); //Agregamos el elemento <p>
+    correcto.textContent = mensaje; //El contenido de este sera igual a un mensaje
+    correcto.classList.add('correcto'); //agregamos la clase 'correcto'
+
+    formulario.appendChild(correcto); //inserta el objeto al documento html
+
+    //Desaoarezca despues de 1 segundos
+    setTimeout(()=>{
+        correcto.remove();
+    }, 5000);
+}
+
